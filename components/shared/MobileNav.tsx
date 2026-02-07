@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "../ui/button"
+import ThemeToggle from "./ThemeToggle"
 
 const MobileNav = () => {
   const pathname = usePathname();
@@ -22,7 +23,8 @@ const MobileNav = () => {
         />
       </Link>
 
-      <nav className="flex gap-2">
+      <nav className="flex gap-2 items-center">
+        <ThemeToggle />
         <SignedIn>
           <UserButton afterSignOutUrl="/" />
 
