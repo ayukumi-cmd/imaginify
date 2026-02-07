@@ -173,7 +173,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
     setNewTransformation(null)
 
     startTransition(async () => {
-      await updateCredits(userId, creditFee)
+      // Credits are unlimited — skip deduction
     })
   }
 
@@ -186,7 +186,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal />}
+        {/* Credits are unlimited — modal disabled */}
         <CustomField 
           control={form.control}
           name="title"
