@@ -55,8 +55,8 @@ export const Collection = ({
 
       {images.length > 0 ? (
         <ul className="collection-list">
-          {images.map((image) => (
-  <Card image={image} key={image._id.toString()} />
+          {images.map((image, index) => (
+  <Card image={image} index={index} key={image._id.toString()} />
           ))}
         </ul>
       ) : (
@@ -94,30 +94,38 @@ export const Collection = ({
   );
 };
 
-const Card = ({ image }: { image: IImage }) => {
+const Card = ({ image, index }: { image: IImage; index: number }) => {
+  const transformation = transformationTypes[
+    image.transformationType as TransformationTypeKey
+  ];
+
   return (
-    <li>
+    <li
+      className="animate-fade-in-up opacity-0"
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
       <Link href={`/transformations/${image._id}`} className="collection-card">
-        <CldImage
-          src={image.publicId}
-          alt={image.title}
-          width={image.width}
-          height={image.height}
-          {...image.config}
-          loading="lazy"
-          className="h-52 w-full rounded-[10px] object-cover"
-          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
-        />
+        <div className="card-image-wrapper">
+          <CldImage
+            src={image.publicId}
+            alt={image.title}
+            width={image.width}
+            height={image.height}
+            {...image.config}
+            loading="lazy"
+            className="h-52 w-full rounded-[10px] object-cover"
+            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
+          />
+          <div className="card-overlay">
+            <span>{transformation.title}</span>
+          </div>
+        </div>
         <div className="flex-between">
           <p className="p-20-semibold mr-3 line-clamp-1 text-dark-600">
             {image.title}
           </p>
           <Image
-            src={`/assets/icons/${
-              transformationTypes[
-                image.transformationType as TransformationTypeKey
-              ].icon
-            }`}
+            src={`/assets/icons/${transformation.icon}`}
             alt={image.title}
             width={24}
             height={24}
