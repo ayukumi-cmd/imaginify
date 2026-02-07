@@ -191,3 +191,10 @@ export const defaultValues = {
 };
 
 export const creditFee = -1;
+
+export const wallpaperSizes = [
+  { label: "Original Size", width: 0, height: 0, suffix: "original" },
+  { label: "Phone (1080x1920)", width: 1080, height: 1920, suffix: "phone" },
+  { label: "Desktop (1920x1080)", width: 1920, height: 1080, suffix: "desktop" },
+  { label: "Tablet (1668x2388)", width: 1668, height: 2388, suffix: "tablet" },
+];

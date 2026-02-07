@@ -1,18 +1,26 @@
 import { auth } from "@clerk/nextjs";
-import Image from "next/image";
 import Link from "next/link";
 
+import BeforeAfterSlider from "@/components/shared/BeforeAfterSlider";
 import Header from "@/components/shared/Header";
-import TransformedImage from "@/components/shared/TransformedImage";
+import WallpaperDownload from "@/components/shared/WallpaperDownload";
 import { Button } from "@/components/ui/button";
 import { getImageById } from "@/lib/actions/image.actions";
 import { getImageSize } from "@/lib/utils";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
+import { getCldImageUrl } from "next-cloudinary";
 
 const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
   const { userId } = auth();
 
   const image = await getImageById(id);
+
+  const transformedUrl = getCldImageUrl({
+    width: image.width,
+    height: image.height,
+    src: image.publicId,
+    ...image.config,
+  });
 
   return (
     <>
@@ -58,28 +66,27 @@ const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
       </section>
 
       <section className="mt-10 border-t border-dark-400/15">
-        <div className="transformation-grid">
-          {/* MEDIA UPLOADER */}
-          <div className="flex flex-col gap-4">
-            <h3 className="h3-bold text-dark-600">Original</h3>
-
-            <Image
-              width={getImageSize(image.transformationType, image, "width")}
-              height={getImageSize(image.transformationType, image, "height")}
-              src={image.secureURL}
-              alt="image"
-              className="transformation-original_image"
+        <div className="py-8">
+          <div className="flex-between mb-4">
+            <h3 className="h3-bold text-dark-600">Comparison</h3>
+            <WallpaperDownload
+              image={{
+                publicId: image.publicId,
+                width: image.width,
+                height: image.height,
+              }}
+              title={image.title}
+              transformationConfig={image.config}
             />
           </div>
 
-          {/* TRANSFORMED IMAGE */}
-          <TransformedImage
-            image={image}
-            type={image.transformationType}
-            title={image.title}
-            isTransforming={false}
-            transformationConfig={image.config}
-            hasDownload={true}
+          <BeforeAfterSlider
+            originalSrc={image.secureURL}
+            transformedSrc={transformedUrl}
+            originalAlt={`${image.title} - Original`}
+            transformedAlt={`${image.title} - Transformed`}
+            width={getImageSize(image.transformationType, image, "width")}
+            height={getImageSize(image.transformationType, image, "height")}
           />
         </div>
 

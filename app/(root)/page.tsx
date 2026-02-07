@@ -1,6 +1,8 @@
 import { Collection } from "@/components/shared/Collection"
+import SurpriseMe from "@/components/shared/SurpriseMe"
 import { navLinks } from "@/constants"
 import { getAllImages } from "@/lib/actions/image.actions"
+import { SignedIn } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -65,6 +67,13 @@ const Home = async ({ searchParams }: SearchParamProps) => {
           </div>
         </div>
       </section>
+
+      {/* Surprise Me */}
+      <SignedIn>
+        <section className="flex-center mt-8 sm:mt-6 hidden sm:flex">
+          <SurpriseMe />
+        </section>
+      </SignedIn>
 
       <section className="sm:mt-12">
         <Collection

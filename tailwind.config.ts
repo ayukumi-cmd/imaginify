@@ -111,6 +111,11 @@ module.exports = {
           "0%": { opacity: "0", transform: "translateX(-10px)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
+        "spin-once": {
+          "0%": { transform: "rotate(0deg) scale(1)" },
+          "50%": { transform: "rotate(180deg) scale(1.2)" },
+          "100%": { transform: "rotate(360deg) scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -121,6 +126,7 @@ module.exports = {
         "float": "float 3s ease-in-out infinite",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "slide-in-left": "slide-in-left 0.3s ease-out forwards",
+        "spin-once": "spin-once 0.6s ease-in-out",
       },
     },
   },

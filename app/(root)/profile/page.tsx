@@ -1,14 +1,17 @@
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Collection } from "@/components/shared/Collection";
 import Header from "@/components/shared/Header";
+import Timeline from "@/components/shared/Timeline";
 import { getUserImages } from "@/lib/actions/image.actions";
 import { getUserById } from "@/lib/actions/user.actions";
 
 const Profile = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
+  const view = (searchParams?.view as string) || "grid";
   const { userId } = auth();
 
   if (!userId) redirect("/sign-in");
@@ -51,11 +54,35 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
       </section>
 
       <section className="mt-8 md:mt-14">
-        <Collection
-          images={images?.data}
-          totalPages={images?.totalPages}
-          page={page}
-        />
+        {/* View Toggle */}
+        <div className="flex items-center gap-3 mb-6">
+          <Link
+            href={`/profile?view=grid&page=${page}`}
+            className={`view-toggle-btn ${view === "grid" ? "active" : ""}`}
+          >
+            Grid View
+          </Link>
+          <Link
+            href={`/profile?view=timeline&page=${page}`}
+            className={`view-toggle-btn ${view === "timeline" ? "active" : ""}`}
+          >
+            Timeline
+          </Link>
+        </div>
+
+        {view === "timeline" ? (
+          <Timeline
+            images={images?.data}
+            totalPages={images?.totalPages ?? 1}
+            page={page}
+          />
+        ) : (
+          <Collection
+            images={images?.data}
+            totalPages={images?.totalPages}
+            page={page}
+          />
+        )}
       </section>
     </>
   );
